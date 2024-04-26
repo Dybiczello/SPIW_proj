@@ -195,13 +195,6 @@ class RoutingController():
 routingController = RoutingController()
 routingController.intents = intents
 routingController.sort()
-
-#def _handle_ConnectionDown (event):
-  # Handle connection down - stop the timer for sending the probes
-  # TODO: s2-s3-s4 ==> only cancel timer for specific connection
-  #global s1s2_mytimer, s1s3_mytimer, s1s4_mytimer
-#  print "ConnectionDown: ", dpidToStr(event.connection.dpid)
-
  
 def getTheTime():  #function to create a timestamp
   flock = time.localtime()
@@ -337,7 +330,6 @@ def _timer_func ():
 
 
 def _handle_portstats_received (event):
-  # Observe the handling of port statistics provided by this function.
 
   global s1_dpid, s2_dpid, s3_dpid, s4_dpid, s5_dpid
   global s1_p1,s1_p4, s1_p5, s1_p6, s2_p1, s3_p1, s4_p1
@@ -827,10 +819,6 @@ def _handle_PacketIn(event):
      msg.actions.append(of.ofp_action_output(port = 6))
      event.connection.send(msg)
 
-# As usually, launch() is the function called by POX to initialize the component (routing_controller.py in our case) 
-# indicated by a parameter provided to pox.py 
-
-
 def launch ():
   global s1s2_start_time, s1s3_start_time, s1s4_start_time
   s1s2_start_time = time.time() * 1000*10
@@ -838,8 +826,7 @@ def launch ():
   s1s4_start_time = s1s2_start_time
   # core is an instance of class POXCore (EventMixin) and it can register objects.
   # An object with name xxx can be registered to core instance which makes this object become a "component" available as pox.core.core.xxx.
-  # for examples see e.g. https://noxrepo.github.io/pox-doc/html/#the-openflow-nexus-core-openflow 
+  # For examples see e.g. https://noxrepo.github.io/pox-doc/html/#the-openflow-nexus-core-openflow 
   core.openflow.addListenerByName("PortStatsReceived",_handle_portstats_received) # listen for port stats , https://noxrepo.github.io/pox-doc/html/#statistics-events
   core.openflow.addListenerByName("ConnectionUp", _handle_ConnectionUp) # listen for the establishment of a new control channel with a switch, https://noxrepo.github.io/pox-doc/html/#connectionup
   core.openflow.addListenerByName("PacketIn",_handle_PacketIn) # listen for the reception of packet_in message from switch, https://noxrepo.github.io/pox-doc/html/#packetin
-#  core.openflow.addListenerByName("ConnectionDown", _handle_ConnectionDown) 
