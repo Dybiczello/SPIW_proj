@@ -233,21 +233,6 @@ def _timer_func ():
   core.openflow.getConnection(s4_dpid).send(of.ofp_stats_request(body=of.ofp_port_stats_request()))
   # print getTheTime(), "sent the port stats request to s1_dpid"
 
-  # below, routing in s1 towards h4 (IP=10.0.0.4) is set according to the value of the variable turn
-  # turn controls the round robin operation
-  # turn=0/1/2 => route through s2/s3/s4, respectively
- 
-  msg = of.ofp_flow_mod()
-  msg.command=of.OFPFC_MODIFY_STRICT
-  msg.priority =100
-  msg.idle_timeout = 0
-  msg.hard_timeout = 0
-  msg.match.dl_type = 0x0800
-  msg.match.nw_dst = "10.0.0.4"
-  msg.actions.append(of.ofp_action_output(port = 5))
-  core.openflow.getConnection(s1_dpid).send(msg)
-  
-  # testy routingController
   routingController.update()
   
 
