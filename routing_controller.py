@@ -1,11 +1,3 @@
-# The program implements a simple controller for a network with 6 hosts and 5 switches.
-# The switches are connected in a diamond topology (without vertical links):
-#    - 3 hosts are connected to the left (s1) and 3 to the right (s5) edge of the diamond.
-# Overall operation of the controller:
-#    - default routing is set in all switches on the reception of packet_in messages form the switch,
-#    - then the routing for (h1-h4) pair in switch s1 is changed every one second in a round-robin manner to load balance the traffic through switches s3, s4, s2.
-
-
 from pox.core import core
 import pox.openflow.libopenflow_01 as of
 from pox.lib.util import dpidToStr
